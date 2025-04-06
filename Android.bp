@@ -273,7 +273,6 @@ cc_library_host_static {
 
     srcs: libadb_srcs + [
         "client/openscreen/mdns_service_info.cpp",
-        "client/openscreen/mdns_service_watcher.cpp",
         "client/openscreen/platform/logging.cpp",
         "client/openscreen/platform/task_runner.cpp",
         "client/openscreen/platform/udp_socket.cpp",
@@ -449,7 +448,6 @@ cc_defaults {
         "client/adb_install.cpp",
         "client/line_printer.cpp",
         "client/fastdeploy.cpp",
-        "client/fastdeploycallbacks.cpp",
         "client/incremental.cpp",
         "client/incremental_server.cpp",
         "client/incremental_utils.cpp",
