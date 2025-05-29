@@ -94,9 +94,7 @@ static void RequestConnectToDevice(const ServiceInfo& info) {
     // Let's re-evaluate if we need a thread-pool or a background thread if this ever becomes
     // a perf bottleneck.
     std::thread([=] {
-        VLOG(MDNS) << "Attempting to secure connect to instance=" << info.instance
-                   << " service=" << info.service << " addr4=%s" << info.v4_address << ":"
-                   << info.port;
+        VLOG(MDNS) << "Attempting to secure connect to instance '" << info << "'";
         std::string response;
         connect_device(std::format("{}.{}", info.instance, info.service), &response);
         VLOG(MDNS) << std::format("secure connect to {} regtype {} ({}:{}) : {}", info.instance,
@@ -108,13 +106,14 @@ static void RequestConnectToDevice(const ServiceInfo& info) {
 void OnServiceReceiverResult(std::vector<std::reference_wrapper<const ServiceInfo>>,
                              std::reference_wrapper<const ServiceInfo> info,
                              ServicesUpdatedState state) {
+    bool updated = true;
     switch (state) {
         case ServicesUpdatedState::EndpointCreated: {
             discovered_services.ServiceCreated(info);
             break;
         }
         case ServicesUpdatedState::EndpointUpdated: {
-            discovered_services.ServiceUpdated(info);
+            updated = discovered_services.ServiceUpdated(info);
             break;
         }
         case ServicesUpdatedState::EndpointDeleted: {
@@ -123,7 +122,9 @@ void OnServiceReceiverResult(std::vector<std::reference_wrapper<const ServiceInf
         }
     }
 
-    update_mdns_trackers();
+    if (updated) {
+        update_mdns_trackers();
+    }
 
     switch (state) {
         case ServicesUpdatedState::EndpointCreated:
