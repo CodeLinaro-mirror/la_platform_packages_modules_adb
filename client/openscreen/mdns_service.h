@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,5 @@
 
 #pragma once
 
-#include <optional>
-#include <string>
-#include <vector>
-
-#include "sysdeps.h"
-
-namespace incremental {
-
-using Files = std::vector<std::string>;
-using Args = std::vector<std::string_view>;
-
-// Returns true if incremental installation should be used by default for the given set of files.
-bool should_use_incremental_by_default(const Files& files);
-
-std::optional<Process> install(const Files& files, const Args& passthrough_args, bool silent);
-
-}  // namespace incremental
+void StartOpenScreenDiscovery();
+bool IsOpenScreenStarted();
