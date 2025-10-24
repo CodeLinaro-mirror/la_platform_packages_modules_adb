@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +18,11 @@
 
 #include <optional>
 #include <string>
-#include <vector>
 
-#include "sysdeps.h"
+#include "discovered_services.h"
 
-namespace incremental {
+// Whatever mdns engine is used, this is the sole entry point into ADB.
+void OnServiceReceiverResult(const ServiceInfo& info, ServiceInfoState state);
 
-using Files = std::vector<std::string>;
-using Args = std::vector<std::string_view>;
-
-// Returns true if incremental installation should be used by default for the given set of files.
-bool should_use_incremental_by_default(const Files& files);
-
-std::optional<Process> install(const Files& files, const Args& passthrough_args, bool silent);
-
-}  // namespace incremental
+std::optional<ServiceInfo> mdns_get_connect_service_info(const std::string& name);
+std::optional<ServiceInfo> mdns_get_pairing_service_info(const std::string& name);
