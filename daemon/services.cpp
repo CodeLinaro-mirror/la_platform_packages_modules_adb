@@ -306,8 +306,10 @@ unique_fd daemon_service_to_fd(std::string_view name, atransport* transport) {
     } else if (name.starts_with("restore:")) {
         return StartSubprocess("/system/bin/bu restore", nullptr, SubprocessType::kRaw,
                                SubprocessProtocol::kNone);
-    } else if (name.starts_with("disable-verity:")) {
-        return StartSubprocess("/system/bin/disable-verity", nullptr, SubprocessType::kRaw,
+    } else if (android::base::ConsumePrefix(&name, "disable-verity:")) {
+        std::string cmd = "/system/bin/disable-verity ";
+        cmd += name;
+        return StartSubprocess(cmd, nullptr, SubprocessType::kRaw,
                                SubprocessProtocol::kNone);
     } else if (name.starts_with("enable-verity:")) {
         return StartSubprocess("/system/bin/enable-verity", nullptr, SubprocessType::kRaw,
